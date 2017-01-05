@@ -1,0 +1,8 @@
+title: Sungyoungkwon85.GitHub.io
+description: sungyoungKwon85.github.io
+google_analytics: 
+show_downloads: true
+theme: jekyll-theme-architect
+
+gems:
+  - jekyll-mentions
