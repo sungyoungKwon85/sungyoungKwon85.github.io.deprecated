@@ -28,3 +28,4 @@ gems:
 exclude:
   - Gemfile
   - Gemfile.lock
+google_analytics_token: 'UA-52116950-3'
