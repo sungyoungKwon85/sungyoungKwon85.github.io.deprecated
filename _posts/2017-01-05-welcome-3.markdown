@@ -1,0 +1,13 @@
+---
+layout: post
+title:  "test 3"
+date:   2017-01-05 14:43:53 +0900
+categories: jekyll update
+---
+<ul>
+  {% for post in site.posts %}
+    <li>
+      <a href="{{ post.url }}">{{ post.title }}</a>
+    </li>
+  {% endfor %}
+</ul>
