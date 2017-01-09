@@ -104,12 +104,12 @@ $ node hello.js
 .
 
 **레디스 데이터 타입**
-* 문자열
-  * 많은 커맨드를 가지고 여러 목적으로 사용된다.
-  * 텍스트(XML, JSON, HTML etc), 정수, 부동소수점, binary data(video, audio, image) 등이 저장된다.
-  * 512MB 초과 X  
+문자열
+* 많은 커맨드를 가지고 여러 목적으로 사용된다.
+* 텍스트(XML, JSON, HTML etc), 정수, 부동소수점, binary data(video, audio, image) 등이 저장된다.
+* 512MB 초과 X  
 
-  * 예제
+* 예제
   {% highlight ruby %}
   $ redis-cli
   > MSET first "First key value" second "Second key value"
