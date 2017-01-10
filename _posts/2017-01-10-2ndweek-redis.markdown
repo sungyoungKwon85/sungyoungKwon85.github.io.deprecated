@@ -29,7 +29,7 @@ REmote Dictionary Server
 
 * 바이너리 스냅샷으로 생성 -> **스냅샷**  
 
-* 시간에 따른 커맨드를 순서대로 저장, 파일로 생성 -> **저널링**
+* 시간에 따른 커맨드를 순서대로 저장, 파일로 생성 -> **저널링**   
 
 .
 
@@ -56,8 +56,10 @@ $ sudo make install
 .  
 
 **Hello Redis with Node**  
-Redis는 여러 실행파일을 제공하는데, 우선 redis-server와 redis-cli를 살펴본다.
-* redis-server : 실제 데이터 저장소
+Redis는 여러 실행파일을 제공하는데, 우선 redis-server와 redis-cli를 살펴본다.  
+
+* redis-server : 실제 데이터 저장소  
+
 * redis-cli : command line interface
 
 .
