@@ -107,7 +107,7 @@ $ node hello.js
 
 .
 
-**레디스 데이터 타입**
+**레디스 데이터 타입**  
 문자열  
 
 * 많은 커맨드를 가지고 여러 목적으로 사용된다.  
@@ -129,3 +129,123 @@ $ node hello.js
   > TTL first
   (Integer) 3 // remaining seconds
   {% endhighlight %}
+
+.
+
+리스트  
+
+* 간단한 콜렉션, 스택, 큐
+
+* 연결리스트여서 추가 삭제 O(1), 접근 O(N)
+
+* 리스트의 각 엘리먼트가 list-max-ziplist-value 보다 작고, 개수가 list-max-ziplist-entries 보다 작으면 인코드 될 수 있고, 메모리를 최적화 할 수 있다.
+
+* 트위터에서 사용자의 최근 트윗 저장시 리스트를 사용하고 있다.
+
+* 예제
+{% highlight ruby %}
+$ redis-cli
+> LPUSH books "Clean Code"
+(Integer) 1
+> RPUSH books "Code Complete"
+(Integer) 2
+> LPUSH books "Peopleware"
+(Integer) 3
+> LLEN books
+(Integer) 3
+> LINDEX books 1
+"Clean Code"
+> LRANGE books 0 1
+"Peopleware"
+"Clean Code"
+> LPOP books
+"Peopleware"
+> LPOP books
+"Code Complete"
+{% endhighlight %}
+
+.
+
+해시
+
+* 문자열을 문자열로 매핑
+
+* 메모리를 효율적으로 쓴다. 검색이 빠르다.
+
+* hash-max-ziplist-entries, hash-max-ziplist-value 설정 기반
+
+* 예제
+{% highlight ruby %}
+$ redis-cli
+> HSET movie "title" "The Godfather"
+(Integer) 1
+> HMSET movie "year" 1972 "rating" 9.2 "watchers" 1000000
+OK
+> HINCRBY movie "watchers" 3
+(integer) 1000003
+> HGET movie "title"
+"The Godfather"
+> HMGET movie "title" "watchers"
+"The Godfather"
+"1000003"
+> HDEL movie "watchers"
+(integer) 1
+> HGETALL movie
+"title"
+"The Godfather"
+"year"
+"1972"
+"rating"
+"9.2"
+{% endhighlight %}
+
+*  해시와 노드를 이용한 투표 시스템 예제
+hash-voting-system.js
+{% highlight ruby %}
+var redis = require("redis");
+var client = redis.createClient();
+
+function saveLink(id, author, title, link) {
+  client.hmset("link:" + id, "author", author, "title", title, "link", link, "score", 0);
+}
+
+function upVote(id) {
+  client.hincrby("link:" + id, "score", 1);
+}
+
+function downVote(id) {
+  client.hincrby("linke:" + id, "score", -1);
+}
+
+function showDetails(id) {
+  client.hgetall("link:" + id, function(err, replies){
+    console.log("Title:",replies['title']);
+    console.log("Author:",replies['author']);
+    console.log("Link:",replies['link']);
+    console.log("Score:",replies['score']);  
+  });
+}
+
+saveLink(123,"dayvson","My Github page", "https://github.com/dayvson");
+upVote(123);
+upVote(123);
+saveLink(456,"hltbra","hltbar page", "https://github.com/hltbra");
+upVote(456);
+upVote(456);
+downVote(456);
+
+showDetails(123);
+showDetails(456);
+
+client.quit();
+{% endhighlight %}
+
+.
+
+command
+{% highlight ruby %}
+$ node hash-voting-system.js
+{% endhighlight %}
+
+
+해시에 많은 필드가 존재하는 경우 HGETALL은 성능 이슈가 있을 수 있다. 이때는 HSCAN이 대안이 될 수 있다.
