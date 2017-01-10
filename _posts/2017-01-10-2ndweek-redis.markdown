@@ -25,8 +25,8 @@ REmote Dictionary Server
 
 .
 
-영속성
-* 바이너리 스냅샷으로 생성 -> **스냅샷**
+영속성  
+* 바이너리 스냅샷으로 생성 -> **스냅샷**  
 * 시간에 따른 커맨드를 순서대로 저장, 파일로 생성 -> **저널링**
 
 .
@@ -104,9 +104,12 @@ $ node hello.js
 .
 
 **레디스 데이터 타입**
-문자열
-* 많은 커맨드를 가지고 여러 목적으로 사용된다.
-* 텍스트(XML, JSON, HTML etc), 정수, 부동소수점, binary data(video, audio, image) 등이 저장된다.
+문자열  
+
+* 많은 커맨드를 가지고 여러 목적으로 사용된다.  
+
+* 텍스트(XML, JSON, HTML etc), 정수, 부동소수점, binary data(video, audio, image) 등이 저장된다.  
+
 * 512MB 초과 X  
 
 * 예제
