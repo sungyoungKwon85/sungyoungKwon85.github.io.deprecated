@@ -240,8 +240,6 @@ showDetails(456);
 client.quit();
 {% endhighlight %}
 
-.
-
 command
 {% highlight ruby %}
 $ node hash-voting-system.js

@@ -1,0 +1,86 @@
+---
+layout: post
+title:  "redis #2"
+date:   2017-01-11 10:10:53 +0900
+categories: redis
+---
+
+
+## Redis 핵심정리 책 Study
+
+.
+
+# 고급 데이터 타입
+- SET
+- sorted SET
+- Bitmap
+- Hyperloglog
+
+.
+
+**SET**  
+순서 X, 중복 X  
+hashtable로 구현됨 -> 추가, 삭제, 검색  O(1)  
+SET의 모든 elements가 Integer면 set-max-intset-entries 설정값만큼 개수를 가질 수 있음.(최대 2^32 -1)  
+
+{% highlight ruby %}
+$ redis-cli
+> SADDF user:max:favorite_artists "Arcade" "Arctic" "Belee" "Lenine"
+(integer) 4
+> SADD user:hugo:favorite_artists "Daft" "Kooks" "Arctic"
+(integer) 3
+> SINTER user:max:favorite_artists user:hugo:favorite_artists /// 교집합
+1) "Arctic"
+> SDIFF user:max:favorite_artists user:hugo:favorite_artists ///차집합
+1) "Belle"
+2) "Arcade"
+3) "Lenine"
+> SUNION user:max:favorite_artists user:hugo:favorite_artists /// 합집합
+... 생략
+> SRANDMEMBER user:max:favorite_artists /// 랜덤
+"Arcade"
+> SISMEMBER user:max:favorite_artists "Arctic" /// 존재여부
+(integer) 1
+> SREM user:max:favorite_artists "Arctic" /// 삭제
+(integer) 1
+> SCARD user:max:favorite_artists /// 개수
+(integer) 3
+> SMEMBERS user:max:favorite_artists /// 모든 elements 리턴
+... 생략
+{% endhighlight %}
+
+.
+
+.
+
+**sorted SET**  
+모든 elements는 연관 점수를 가짐.  
+중복 X  
+추가, 삭제 : O(log(N))  
+
+{% highlight ruby %}
+$ redis-cli
+> ZADD leaders 100 "Alice"
+(integer) 1
+> ZADD leaders 100 "Zed"
+(integer) 1
+> ZADD leaders 102 "Hugo"
+(integer) 1
+> ZADD leaders 101 "Max"
+(integer) 1
+> ZRANGE leaders 0 -1 /// 내림 정렬 리턴(동점이면 편짐 순), 0: start index, -1 : end index
+"Hugo"
+"Max"
+"Zed"
+"Alice"
+> ZREVERSE leaders 0 -1 /// 오름 정렬
+... 생략
+> ZREVERSE leaders 0 -1 WITHSCORES /// 점수도 같이
+... 생략
+{% endhighlight %}
+
+.
+
+.
+
+**Bitmap**
