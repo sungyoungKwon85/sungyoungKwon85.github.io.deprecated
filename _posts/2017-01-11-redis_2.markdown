@@ -8,17 +8,23 @@ categories: redis
 
 ## Redis 핵심정리 책 Study
 
-.
+<br>
+<br>
+<br>
+<br>
 
-# 고급 데이터 타입
+## 고급 데이터 타입
 - SET
 - sorted SET
 - Bitmap
 - Hyperloglog
 
-.
+<br>
+<br>
+<br>
+<br>
 
-**SET**  
+# SET  
 순서 X, 중복 X  
 hashtable로 구현됨 -> 추가, 삭제, 검색  O(1)  
 SET의 모든 elements가 Integer면 set-max-intset-entries 설정값만큼 개수를 가질 수 있음.(최대 2^32 -1)  
@@ -49,11 +55,13 @@ $ redis-cli
 ... 생략
 {% endhighlight %}
 
-.
 
-.
+<br>
+<br>
+<br>
+<br>
 
-**sorted SET**  
+# sorted SET  
 모든 elements는 연관 점수를 가짐.  
 중복 X  
 추가, 삭제 : O(log(N))  
@@ -79,8 +87,82 @@ $ redis-cli
 ... 생략
 {% endhighlight %}
 
-.
 
-.
+<br>
+<br>
+<br>
+<br>
 
-**Bitmap**
+# Bitmap  
+내부적으로 비트맵은 문자열임.  
+레디스는 문자열을 비트맵으로 제어할 수 있는 커맨드를 제공.  
+2^32비트까지 저장.  
+
+* 좋은 예  
+특정 일자에 웹사이트를 방문한 모든 사용자 ID를 저장하는 경우  
+ID 4byte, 총 5백만의 사용자가 있고, 해당 일 2백만이 방문했다고 가정할 시,    
+**set** : 32bit * 2백만 = **8MB**  
+**bitmap** : 1 bit * 5백만 = **625KB**  
+
+
+* 안좋은 예  
+100명만 방문했다면?  
+**set** : 32bit * 100 = **3.125KB**  
+**bitmap** : 1bit * 5백만 = **625KB**  
+
+<br>
+<br>
+**`비트맵은 실시간 분석을 포함하는 경우 적합하다.`**  
+
+<br>
+* 예제
+{% highlight ruby %}
+> SETBIT visits:2015-01-01 10 1 /// 10 : 사용자, 1 : 방문함
+(integer) 0
+> SETBIT visits:2015-01-01 15 1
+(integer) 0
+> SETBIT visits:2015-01-02 10 1
+(integer) 0
+> SETBIT visits:2015-01-02 11 1
+(integer) 0
+> GETBIT visits:2015-01-01 10
+1
+> GETBIT visits:2015-01-02 15
+0
+> BITCOUNT visits:2015-01-01
+(integer) 2
+> BITOP OR total_users visits:2015-01-01 visits:2015-01-02
+(integer) 2
+> BITCOUNT total_users
+(integer) 3
+{% endhighlight %}
+
+<br>
+<br>
+<br>
+<br>
+
+# 하이퍼로그로그
+실제 데이터 타입 아님, 개념적으로는 알고리즘임.  
+SET에 존재하는 고유 `엘리먼트 개수를 근사치로 제공`하기 위한 알고리즘임.(100%아님)  
+Key당 최대 12KB의 작은 메모리를 사용.  
+`항상 O(1)`  
+* 예제
+{% highlight ruby %}
+> PFADD visits:2015-01-01 "carl" "max" "hugo" "arthur"
+(integer) 1
+> PFADD visits:2015-01-01 "carl" "max" "hugo"
+(integer) 0
+> PFADD visits:2015-01-02 "carl" "max" "kc" "hugo" "renata"
+(integer) 1
+> PFCOUNT visits:2015-01-01
+(integer) 4
+> PFCOUNT visits:2015-01-02
+(integer) 4
+> PFCOUNT visits:2015-01-01 visits:2015-01-02
+(integer) 6
+> PFMERGE visits:total visits:2015-01-01 visits:2015-01-02
+OK
+> PFCOUNT visits:total
+(integer) 6
+{% endhighlight %}
