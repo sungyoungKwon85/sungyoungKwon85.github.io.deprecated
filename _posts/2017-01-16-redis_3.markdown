@@ -1,0 +1,185 @@
+---
+layout: post
+title:  "redis #3"
+date:   2017-01-16 20:10:53 +0900
+categories: redis
+---
+
+
+## Redis 핵심정리 책 Study
+
+<br>
+<br>
+<br>
+<br>
+
+## 시계열
+- 기초구축
+- 해시로 최적화
+- 정렬된 셋과 하이퍼로그로그를 사용한 유일한 엘리먼트 추가
+
+<br>
+<br>
+<br>
+<br>
+
+# 기초구축  
+시계열은 시간 간격 동안 만들어진 순차적인 값의 연속  
+통계학, 소셜 네트워크, 통신 공학 등에서 사용  
+
+매초 발생한 이벤트를 저장하면 최소 86,400개의 데이터 포인트가 매일 생성된다.  
+긴 시간동안 많은 데이터 포인트를 저장하는 것은, 특히 in-memory 데이터 저장소인 레디스로써는 도전적인 과제이다.  
+
+**과제**
+레디스 문자열을 사용해 간단한 시계열 라이브러리를 생성하는 방법을 소개한다.  
+* insert로 timestamp 를 전달해 발생한 event를 저장  
+* hash를 사용해 효율을 올린다  
+* sorted SET, Hyperloglog를 통해 timestamp 범위에 존재하는 event를 저장하고 검색할 수 있다  
+
+예를 들어 2015년 1월 1일에 이벤트가 발생하면 아래의 레디스 키가 증분된다.    
+* event:1sec:1420070400
+* event:1min:1420070400
+* event:1hour:1420070400
+* event:1day:1420070400
+
+모든 이벤트를 시간단위로 그룹화 한다.  
+이런 솔류션은 페이지뷰, 비디오뷰, 클릭 수, 구매 항목 수 등이 거의 실시간으로 올라오는 이벤트 개수를 저장하는데 적합하다.  
+
+<br>
+<br>
+
+**timeseries-string.js**
+{% highlight ruby %}
+// TimeSeries 함수 생성
+function TimeSeries(client, namespace) {   
+  this.namespace = namespace;   
+  this.client = client;   
+  this.units = {   
+     second: 1,
+     minute: 60,
+     hour: 60 * 60,
+     day: 24 * 60 * 60
+  };
+  this.granularities = {   
+    '1sec' : { name: '1sec', ttl: this.units.hour * 2, duration: this.units.second },  
+    '1min' : { name: '1min', ttl: this.units.day * 7, duration: this.units.minute },  
+    '1hour': { name: '1hour', ttl: this.units.day * 60 , duration: this.units.hour },  
+    '1day' : { name: '1day', ttl: null, duration: this.units.day }    };
+  };
+}
+
+// insert
+//  incr를 통해 key값 증가시킴.
+//  expire를 통해 기간 지나면 key를 삭제
+TimeSeries.prototype.insert = function(timestampInSeconds) {   
+  for (var granularityName in this.granularities) {   
+    var granularity = this.granularities[granularityName];   
+    var key = this._getKeyName(granularity, timestampInSeconds);   
+    this.client.incr(key);   
+    if (granularity.ttl !== null) {   
+      this.client.expire(key, granularity.ttl);   
+    }
+  }
+};
+
+// getKeyName
+//  정규화된 timestamp 리턴("pageviews:1sec:1000")
+TimeSeries.prototype._getKeyName = function(granularity, timestampInSeconds) {   
+  var roundedTimestamp = this._getRoundedTimestamp(timestampInSeconds, granularity.duration);   
+  return [this.namespace, granularity.name, roundedTimestamp]. join(':');   
+};
+
+// getRoundedTimestamp
+//  정밀도 값 기반 정규화된 타임스탬프를 리턴
+TimeSeries.prototype._getRoundedTimestamp = function(timestampInSeconds, precision) {   
+  return Math.floor(timestampInSeconds/precision) * precision;   
+};
+
+
+// fetch
+//  타임스탬프 범위를 기반으로 하는 데이터 포인트 배열을 전달해 콜백 함수를 실행
+TimeSeries.prototype.fetch = function(granularityName, beginTimestamp, endTimestamp, onComplete) {   
+  var granularity = this.granularities[granularityName];   
+  var begin = this._getRoundedTimestamp(beginTimestamp, granularity. duration);   
+  var end = this._getRoundedTimestamp(endTimestamp, granularity. duration);   
+  var keys = [];   
+  for (var timestamp = begin; timestamp <= end; timestamp += granularity.duration) {   
+    var key = this._getKeyName(granularity, timestamp);   
+    keys.push(key);   
+  }
+  this.client.mget(keys, function(err, replies) {   
+    var results = [];   0
+    for (var i = 0 ; i < replies.length ; i++) {   
+      var timestamp = beginTimestamp + i * granularity.duration;   
+      var value = parseInt(replies[i], 10) || 0;   
+      results.push({timestamp: timestamp , value: value});   
+    }
+    onComplete(granularityName, results);   
+  });
+};
+
+// 외부에서 사용할 수 있게 함
+exports.TimeSeries = TimeSeries;
+{% endhighlight %}
+
+<br>
+<br>
+
+**using-timeseries.js**
+{% highlight ruby %}
+var redis = require("redis");
+var client = redis.createClient();
+
+// 매개변수 3개 이상여야 한다
+if (process.argv.length < 3) {    
+  console.log("ERROR: You need to specify a data type!");
+  console.log("$ node using-timeseries.js [string|hash]");
+  process.exit(1);
+}
+
+// 세번째가 데이터 타입
+var dataType = process.argv[2];    
+
+// 레디스의 모든 데이터 삭제
+client.flushall();    
+
+// 모듈 가져오기
+var timeseries = require("./timeseries-" + dataType);    
+
+// TimeSeries 객체 생성 with namespace
+var item1Purchases = new timeseries.TimeSeries(client, "purchases:item1");  
+
+
+var beginTimestamp = 0;    
+item1Purchases.insert(beginTimestamp);    
+item1Purchases.insert(beginTimestamp + 1);    
+item1Purchases.insert(beginTimestamp + 1);    
+item1Purchases.insert(beginTimestamp + 3);    
+item1Purchases.insert(beginTimestamp + 61);  // 분이 달라서 다른 라인에 속한다  
+
+function displayResults(granularityName, results) {    
+  console.log("Results from " + granularityName + ":");
+  console.log("Timestamp \t| Value");
+  console.log("--------------- | ------");
+  for (var i = 0 ; i < results.length; i++) {
+    console.log('\t' + results[i].timestamp + '\t| ' + results[i].value);
+  }
+  console.log();
+}
+
+
+// fetch 호출!
+// 5초 간격으로 1초 단위
+item1Purchases.fetch("1sec", beginTimestamp, beginTimestamp + 4, displayResults);   
+// 3분 간격으로 1분 단위
+item1Purchases.fetch("1min", beginTimestamp, beginTimestamp + 120, displayResults);    
+
+client.quit();
+{% endhighlight %}
+
+**실행하기**  
+`$ node using-timeseries.js string`
+<br>
+<br>
+<br>
+<br>
