@@ -1,0 +1,26 @@
+---
+layout: post
+title:  "tomcat 설정, ROOT 배포 설정"
+date:   2017-01-16 20:10:53 +0900
+categories: was
+---
+
+
+## WAS 서버를 생성하면서 ROOT Deploy
+
+<br>
+<br>
+<br>
+<br>
+
+**개요**  
+Jenkins에 git을 연결하여 WAS 서버에 war를 배포했다.  
+tomcat을 구동하면서 war를 풀면서 class 파일들을 생성할 것이라 예상했으나,  
+ROOT는 풀리지 않는다.  
+
+**해결책**
+* ROOT 디렉토리를 백업하고 삭제한 뒤, 톰캣을 재구동 하면 생성된다고 한다.
+
+* ROOT 디렉토리 대신, 다른 디렉토리( =myname )를 사용한다.  
+  server.xml --> Context --> path="/" docBase="myname"  
+   
