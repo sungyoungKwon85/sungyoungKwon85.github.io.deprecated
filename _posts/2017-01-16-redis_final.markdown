@@ -1,0 +1,76 @@
+---
+layout: post
+title:  "redis 정리"
+date:   2017-01-31 12:10:53 +0900
+categories: redis
+---
+
+참조 : http://bcho.tistory.com/654  
+<br>
+<br>
+
+## 레디스란
+
+**REmote DIctionary System**  
+**Memory 기반의 Key/Value Store**  
+<br>
+<br>
+Cassandra/HBase와 같이 **NoSQL DBMS**로 분류, 또는 memcached같은 **In memory Solution**으로 분류된다.  
+<br>
+<br>
+memcached에 버금가는 성능 + 다양한 데이터 구조체를 지원함으로써 다음과 같은 용도로 사용될 수 있다.
+* Message Queue
+* Shared Memory
+* Remote Dictionary
+<br>
+<br>
+
+Redis를 적용한 서비스들은 아래와 같다.
+* Line
+* StackOverflow
+* Blizzard
+* digg
+<br>
+<br>
+
+# 데이터 타입
+* String
+* Set
+* Sorted Set
+* Hashes
+* List
+
+<br>
+<br>
+데이터 저장 구조  
+![저장구조](https://github.com/sungyoungKwon85/sungyoungKwon85.github.io/blob/master/images/Image_%255B7%255D.png?raw=true)  
+
+<br>
+<br>
+# Persistance
+**1. snapshot(RDB) 방식**  
+특정 시점에서 메모리에 있는 전체 내용을 DISK에 옮긴다.  
+SAVE(blocking 방식)/BGSAVE(non-blocking 방식)이 있다.  
+<br>
+장점 : 서버 restart시 snapshot만 load하면 되므로 restart가 빠르다.  
+단점 : snapshot 추출시간이 오래 걸린다. snapshot 이후 서버가 다운되면 snapshot이후의 데이터는 유실된다.  
+<br>
+<br>
+**2. AOF(Append On File) 방식**  
+모든 write/update 연산 자체를 모두 log파일에 기록하는 형태이다.  
+서버 restart시 write/update operation을 순차적으로 재 실행해서 데이터를 복구한다.  
+non-blocking방식  
+<br>
+장점 : Log file에 append하므로 server가 다운되도 데이터 유실이 없다.  
+단점 : 로그 데이터 양이 RDB방식에 비해 크고, 복구시 write/update operation때문에 restart가 느리다.  
+<br>
+<br>
+**권장 사항**  
+<span style="color:blue">RDB와 AOF 방식을 혼용해서 쓰는 것이 바람직하다.</span>  
+주기적으로 snapshot으로 백업하고, 다음 snapshot까지 AOF방식으로 log를 쌓는다.  
+서버가 restart시 snapshot을 읽어들이고, 소량의 log에서 operation하므로 restart 시간이 절약되고 데이터 유실 또한 막을 수 있다.  
+<br>
+<br>
+
+<br>
+# Replication Topology
