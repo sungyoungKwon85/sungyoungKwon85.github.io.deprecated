@@ -74,3 +74,17 @@ non-blocking방식
 
 <br>
 # Replication Topology
+**Master/Slave**  
+1개의 master node는 n개의 slave node를 가질 수 있고, 각 slave node 또한 n개의 slave node를 가질 수 있다.  
+<br>
+Query Off Loading 기법을 통해 master node는 write only, slave node는 read only로 사용하면 성능향상에 도움이 된다.  
+Redis는 특히 value에 대한 여러가지 연산(ex.합집합, 교집합, Range query등)을 지원하므로 더욱 성능향상에 유리하다.  
+<br>
+master/slave간의 복제는 non-blocking 상태로 이뤄진다.  
+즉, 데이터 불일치성을 유발할 수 있다.  
+
+<br>
+<br>
+**용량 확장**  
+클러스터링을 통한 확장성을 제공하지 않기 때문에 데이터 용량이 클 경우 redis는 Sharding 아키텍쳐를 이용하고 있다.  
+ex. Redis 서버별로 저장하는 key 대역폭을 정해놓은 후, 나눠서 저장  
