@@ -1,0 +1,49 @@
+---
+layout: post
+title:  "L4 & L7"
+date:   2017-02-06 13:10:53 +0900
+categories: infra
+---
+
+참조 : http://freeism.web-bi.net/tc/657  
+<br><br>
+
+
+# L4 :  
+OSI layer 3~4에 속하는 IP address, TCP/UDP port 정보를 참조하여 스위칭 하는 장비  
+
+# L7 :  
+OSI layer 3~**7**에 속하는 IP address, TCP/UDP port 정보 **및 패킷 정보**를 참조하여 스위칭 하는 장비  
+
+[구조도]  
+![저장구조](http://freeism.co.kr/tc/attach/1/7162159243.png)  
+
+<br><br>
+일반적으로 서버들의 로드밸런싱을 위해 사용됨  
+
+<br><br>
+# sticky session
+L4 스위치를 통해 분배된 서비스 세션은 연결 요청에 n개중 한 대의 서버에 분배되고, 따라서 여러번 접속하더라도 같은 서버에 접속될 확률은 1/n.  
+같은 서버에 계속 연결시킬 수 있는데 이것이 sticky 옵션이다.  
+기존 사용자의 세션 상태를 timeout 시간내에는 계속 유지시켜주는 것이다.  
+
+**문제점 :**  
+로드밸런싱이 제대로 동작하지 않을 수 있다.  
+프록시서버를 사용하는 경우, 회사 PC의 IP가 아니라 프록시 서버의 IP를 통해 외부로 나간다면, 여러 사람이 timeout시간내에 접속할 때 계속 하나의 서버에만 로드가 집중될 것이다.  
+
+**대안 :**  
+SSL이나 기타 다른 보안모듈을 통해 인증된 사용자에 대해 Cookie/DB에 기록 후 세션을 유지하도록 한다.  
+(성능/비용 문제가 있겠지만)  
+이 때 L7 스위치를 사용한다.  
+
+<br><br>
+# L7 switching 방식  
+* URL switching  
+  * URL의 특정 String을 검사해서 부하를 분산시키는 방식  
+  <br>
+* Cookie switching  
+  * Http header의 Cookie 값에 따른 특정 String을 기준으로 분산시키는 방식  
+  <br>
+* Content switching  
+  * XML tags 또는 multiple Http deader를 기준으로 복잡한 로드밸런싱을 구현한다.  
+  <br>
