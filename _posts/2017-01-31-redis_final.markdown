@@ -5,8 +5,11 @@ date:   2017-01-31 12:10:53 +0900
 categories: redis
 ---
 
-참조 : http://bcho.tistory.com/654  
+참조 :  
+http://bcho.tistory.com/654  
+http://knight76.tistory.com/attachment/cfile4.uf@220DF53954F84EA32C99B0.pdf  
 <br>
+Spring + redis cache : http://www.baeldung.com/spring-data-redis-tutorial
 <br>
 
 ## 레디스란
@@ -81,10 +84,38 @@ Query Off Loading 기법을 통해 master node는 write only, slave node는 read
 Redis는 특히 value에 대한 여러가지 연산(ex.합집합, 교집합, Range query등)을 지원하므로 더욱 성능향상에 유리하다.  
 <br>
 master/slave간의 복제는 non-blocking 상태로 이뤄진다.  
-즉, 데이터 불일치성을 유발할 수 있다.  
+즉, 데이터 불일치성을 유발할 수 있으므로 일치성(Consistency)가 매우 중요하다면 Redis 사용을 다시 한번 고려헤 봐야 한다.  
+
 
 <br>
 <br>
 **용량 확장**  
 클러스터링을 통한 확장성을 제공하지 않기 때문에 데이터 용량이 클 경우 redis는 Sharding 아키텍쳐를 이용하고 있다.  
 ex. Redis 서버별로 저장하는 key 대역폭을 정해놓은 후, 나눠서 저장  
+
+<br>
+<br>
+**장애 조치(Failover)**  
+Master의 데이터가 장애로 인해 손실 될 경우, 묶여 있는 Slave의 데이터도 동시에 손실 될 수 있다.  
+- 이런 경우에는 "slaveof no one"이라는 명령어를 사용해 Slave가 Master가 되게할 수 있다.  
+- "info" 명령어로 master 설정을 확인해 본다  
+- 애플리케이션 서버에서 Redis연결 부분을 장애가 발생한 Master에서 Slave(New Master)로 변경한다.  
+- New Master가 된 서버에서 "info" 명령어를 통해 connected_clients가 접속되는지/키 값이 올라가는지 확인한다.  
+- "monitor" 명령어를 통해 커맨드가 제대로 들어오는지 확인한다.  
+
+<br>
+<br><br>
+위에 나열한 장애 조치를 자동으로 시스템에서 할 수 있다.  
+- Redis-management 서버를 둬서 Redis 장비 모니터링을 해 status를 확인한다.  
+- 각 Redis 장비의 Master/Slave 정보를 Zookeeper에 저장한다.  
+- 애플리케이션 서버는 Zookeeper의 정보를 보고 Redis Master의 장비 이름을 확인하고 사용한다.  
+- 애플리케이션 서버는 Zookeeper 주소만 알면 된다.  
+
+
+![구조](https://github.com/sungyoungKwon85/sungyoungKwon85.github.io/blob/master/images/redis_zookeeper_archit.png?raw=true)
+<br><br>
+다음은 Redis 서버 장애시 새로운 Master로 구조가 변경됨을 보여준다.  
+
+![구조](https://github.com/sungyoungKwon85/sungyoungKwon85.github.io/blob/master/images/redis%20failover%20archit.png?raw=true)
+<br><br>
+<br>
