@@ -157,6 +157,7 @@ item1Purchases.insert(beginTimestamp + 1);
 item1Purchases.insert(beginTimestamp + 3);    
 item1Purchases.insert(beginTimestamp + 61);  // 분이 달라서 다른 라인에 속한다  
 
+// callback 으로 사용할 메서드
 function displayResults(granularityName, results) {    
   console.log("Results from " + granularityName + ":");
   console.log("Timestamp \t| Value");
