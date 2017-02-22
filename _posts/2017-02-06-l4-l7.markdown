@@ -1,8 +1,8 @@
 ---
 layout: post
-title:  "python-scrapy"
-date:   2017-02-23 00:10:53 +0900
-categories: python-scrapy
+title:  "l4-l7"
+date:   2017-02-06 00:10:53 +0900
+categories: l4-l7
 ---
 
 참조 : http://freeism.web-bi.net/tc/657  
