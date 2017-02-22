@@ -99,6 +99,16 @@ exports = module.exports = app;
 
 <br><br><br>
 
+### 3. 실행
+
+$ node server.js  
+
+http://127.0.0.1:8081/scrape  
+
+$ vi output.json
+
+<br><br><br>
+
 ### 기타  
 
 페이지 구조가 변경되면 크롤링을 할 수 없다.  
