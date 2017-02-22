@@ -1,49 +1,62 @@
----
-layout: post
-title:  "python-scrapy"
-date:   2017-02-23 00:10:53 +0900
-categories: python-scrapy
----
-
-참조 : http://freeism.web-bi.net/tc/657  
-<br><br>
+BeautifulSoup과 Scrapy가 인기있는 크롤링 라이브러리  
+Scrapy가 기능이 더 다양하다.  
 
 
-# L4 :  
-OSI layer 3~4에 속하는 IP address, TCP/UDP port 정보를 참조하여 스위칭 하는 장비  
 
-# L7 :  
-OSI layer 3~**7**에 속하는 IP address, TCP/UDP port 정보 **및 패킷 정보**를 참조하여 스위칭 하는 장비  
+//brew : 맥에서 패키지를 관리해줌 apt와 비슷함
+https://brew.sh/
+$ /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 
-[구조도]  
-![저장구조](http://freeism.co.kr/tc/attach/1/7162159243.png)  
+//brew 이용해 wget 설치
+$ brew install wget
 
-<br><br>
-일반적으로 서버들의 로드밸런싱을 위해 사용됨  
+//brew 버전확인
+$ brew -v
 
-<br><br>
-# sticky session
-L4 스위치를 통해 분배된 서비스 세션은 연결 요청에 n개중 한 대의 서버에 분배되고, 따라서 여러번 접속하더라도 같은 서버에 접속될 확률은 1/n.  
-같은 서버에 계속 연결시킬 수 있는데 이것이 sticky 옵션이다.  
-기존 사용자의 세션 상태를 timeout 시간내에는 계속 유지시켜주는 것이다.  
+// pip : python으로 만들어진 패키지를 관리하는 녀석
+$ sudo easy_install pip
 
-**문제점 :**  
-로드밸런싱이 제대로 동작하지 않을 수 있다.  
-프록시서버를 사용하는 경우, 회사 PC의 IP가 아니라 프록시 서버의 IP를 통해 외부로 나간다면, 여러 사람이 timeout시간내에 접속할 때 계속 하나의 서버에만 로드가 집중될 것이다.  
+------------
+동영상 강의
+https://www.youtube.com/watch?v=CwkhdqfyvrM&index=3&list=PLWUxS6i2fXtip8sHElwRUubwWfLowlFA4
 
-**대안 :**  
-SSL이나 기타 다른 보안모듈을 통해 인증된 사용자에 대해 Cookie/DB에 기록 후 세션을 유지하도록 한다.  
-(성능/비용 문제가 있겠지만)  
-이 때 L7 스위치를 사용한다.  
 
-<br><br>
-# L7 switching 방식  
-* URL switching  
-  * URL의 특정 String을 검사해서 부하를 분산시키는 방식  
-  <br>
-* Cookie switching  
-  * Http header의 Cookie 값에 따른 특정 String을 기준으로 분산시키는 방식  
-  <br>
-* Content switching  
-  * XML tags 또는 multiple Http deader를 기준으로 복잡한 로드밸런싱을 구현한다.  
-  <br>
+virtualenv에 대한 설명
+http://hackersstudy.tistory.com/43
+
+
+// six어쩌구저쩌구 인스톨 실패나서 ignore키워드 추가해줬음
+$ sudo pip install --ignore-installed six virtualenv virtualenvwrapper
+
+
+// mac을 위한 alias설정법
+http://blog.pigno.se/post/130756784138/mac-%EC%9C%A0%EC%A0%80%EB%A5%BC-%EC%9C%84%ED%95%9C-alias-%EC%84%A4%EC%A0%95
+
+// 설정
+$ vi bash_profile
+export WORKON_HOME=$HOME/.virtualenvs
+source /usr/local/bin/virtualenvwrapper.sh
+
+
+// 갱신
+$ source ~/.bash_profile
+virtualenvwrapper......
+
+
+
+// 사용할 가상환경 이름
+$ mkvirtualenv kkwonsy_python
+
+
+// 가상환경 종료
+$ deactivate
+
+// 가상환경 들어가기
+$ workon kkwonsy_python
+
+// 가상환경 경로
+$ cd ~/.virtualenvs/
+
+
+// scrapy 설치
+$ pip install scrapy
