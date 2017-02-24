@@ -35,8 +35,8 @@ DELTA?
 ![commit FLOW](http://codingdomain.com/git/partial-commits/git-staging-area.png)  
 <br><br><br>
 
-참고  
-http://blog.naver.com/PostView.nhn?blogId=choigohot&logNo=40192765409  
+참고 : 강추강추  
+https://git-scm.com/book/ko/v1/Git-%EB%B8%8C%EB%9E%9C%EC%B9%98-%EB%B8%8C%EB%9E%9C%EC%B9%98%EC%99%80-Merge%EC%9D%98-%EA%B8%B0%EC%B4%88  
 
 
 `$ git add README test.rb LICENSE`  
@@ -95,10 +95,6 @@ $ git checkout master # 이렇게 하면 어떻게 될까?
 <br><br><br>
 
 # Merge  
-참고 :  
-https://git-scm.com/book/ko/v1/Git-%EB%B8%8C%EB%9E%9C%EC%B9%98-%EB%B8%8C%EB%9E%9C%EC%B9%98%EC%99%80-Merge%EC%9D%98-%EA%B8%B0%EC%B4%88  
-
-<br><br><br>
 
 
 
