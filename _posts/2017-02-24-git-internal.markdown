@@ -107,7 +107,10 @@ $ git checkout master # 이렇게 하면 어떻게 될까?
 
 
 
-
+------
+http://insanehong.kr/post/debuging-with-git/
+https://www.slideshare.net/insanehong/gitbasiccommands
+https://www.slideshare.net/xpressengine/xecon2015-31-git-workflow-with-github
 
 
 
