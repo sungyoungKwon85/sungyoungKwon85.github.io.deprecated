@@ -136,6 +136,10 @@ $ scrapy shell "http://www.dmoz.org/Computers/Programming/Languages/Python/Books
 scrapy crawl -o result.json  
 
 
+// robots.txt  
+ppomppu.co.kr/robots.txt 확인하면 크롤링 허용 정보를 알 수 있다.  
+
+
 
 
 
