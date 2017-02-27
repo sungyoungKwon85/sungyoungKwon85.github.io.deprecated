@@ -1,0 +1,112 @@
+---
+layout: post
+title:  "mysql-mac"
+date:   2017-02-27 13:10:53 +0900
+categories: mysql
+---
+
+참조 :  
+http://miconblog.com/archives/2014/11/mac%EC%97%90%EC%84%9C-mysql-%EC%84%A4%EC%B9%98%EC%99%80-%EC%8B%A4%ED%96%89-%EA%B7%B8%EB%A6%AC%EA%B3%A0-%EB%AA%87%EA%B0%80%EC%A7%80-%EC%9C%A0%EC%9D%98%EC%82%AC%ED%95%AD/  
+
+# 설치  
+`$ brew install mysql`  
+
+`$ brew info mysql`  
+
+
+# 서버 실행  
+`$ mysql.server start`  
+HomeBrew는 /usr/local/Cellar 폴더에 패키지를 설치한후 심볼릭 링크를 알아서 만들어므로 어디서든 명령어만 입력하면 된다.  
+
+cf) linux  
+`service mysqld start`  
+<br><br><br>
+
+# 접속  
+`$ mysql -u root`  
+<br><br><br>
+
+# 캐릭터 셋  
+`> status;`
+
+utf8이 아니면 캐릭터 셋 변경이 필요하다.  
+
+
+MySQL에서 설정파일을 읽는 순서는 다음과 같다.  
+- /etc/my.cnf  
+- /etc/mysql/my.cnf  
+- /usr/local/mysql/etc/my.cnf  
+-  ~/.my.cnf  
+
+일단 /etc/my.cnf 파일이 있는지 확인하고 없으면 /usr/local/mysql/support-files 폴더에서 my-default.cnf 파일을 복사해온다.  
+`$ cp /usr/local/mysql/support-files/my-default.cnf /etc/my.cnf`  
+
+{% highlight ruby %}
+[mysqld]
+character-set-server=utf8
+collation-server=utf8_general_ci
+
+init_connect=SET collation_connection=utf8_general_ci
+init_connect=SET NAMES utf8
+
+[client]
+default-character-set=utf8
+
+[mysql]
+default-character-set=utf8
+{% endhighlight %}
+<br>
+서버 재 시작  
+`$ sudo /usr/local/mysql/support-files/mysql.server restart`
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.

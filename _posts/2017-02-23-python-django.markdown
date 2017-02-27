@@ -1,12 +1,15 @@
 ---
 layout: post
-title:  "python-django"
+title:  "python-django-setting"
 date:   2017-02-25 17:10:53 +0900
 categories: python-django
 ---
 
 참고 :  
-https://tutorial.djangogirls.org/ko/django/  
+- (추천)https://tutorial.djangogirls.org/ko/django/  
+- http://blog.jeonghwan.net/%EA%B8%B0%EC%A1%B4-mysql%EC%97%90-%EC%9E%A5%EA%B3%A0-%EC%96%B4%EB%93%9C%EB%AF%BC-%EB%B6%99%EC%9D%B4%EA%B8%B0/  
+- (추천)http://tuwlab.com/26314  
+- http://www.w3ii.com/ko/python3/python_database_access.html  
 
 <br><br><br>
 
@@ -77,27 +80,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 <br><br><br>
 
-# 데이터베이스 설정하기  
-sqlite3는 settings.py에 기본 설치가 되어 있다.  
-{% highlight ruby %}
-  DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-        }
-    }
-{% endhighlight %}
 
-데이터배이스 생성하려면 아래와 같이 실행한다.    
-`$ python manage.py migrate`
-
-서버를 띄워보자  
-`$ python manage.py runserver`
-
-`http://127.0.0.1:8000/`
-
-<br><br><br>
-<br><br><br>
 
 # 장고 모델  
 
@@ -165,6 +148,88 @@ from django.db import models
 
 <br><br><br>
 
+# 데이터베이스 설정하기  
+sqlite3는 settings.py에 기본 설치가 되어 있다.  
+{% highlight ruby %}
+  DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        }
+    }
+{% endhighlight %}
+
+
+<br><br><br>
+**mysql** 을 사용하려면 변경할 것.  
+
+settings.py  
+
+{% highlight ruby %}
+DATABASES = {
+  'default': {
+  'ENGINE': 'django.db.backends.mysql',
+    'NAME': 'testdb',
+    'HOST': 'localhost',
+    'PORT': '3306',
+    'USER': 'root',
+    'PASSWORD': ''
+  }
+}
+{% endhighlight %}
+
+
+~~`$ pip install mysql-python`~~  
+
+~~"python setup.py egg_info failed with error....." 라는 에러가.....~~    
+~~http://itissmart.tistory.com/45~~    
+~~python 2.* 버전에서만 지원되는 거였다..!!~~  
+
+
+python 3.* 버전은 아래를 참고 한다.  
+
+**PyMySQL**  
+`$ pip install PyMySQL`  
+
+우선, 기본으로 설치되어있는 MySQLDB어댑터가 Django1.8버전에서 제대로 동작하지 않기 때문에 대신 PyMySQL어댑터를 사용하기 위해 상단에 다음 import구문을 추가해 준다.  
+
+settings.py  
+
+{% highlight ruby %}
+import pymysql
+pymysql.install_as_MySQLdb()
+
+LANGUAGE_CODE = 'ko-kr' # 요건 언어 설정  
+{% endhighlight %}
+
+manage.py파일은 사이트 관리를 위한 백엔드 콘솔 기능을 지원하는 스크립트.  
+여기에 migrate명령을 입력하면 Admin모듈과 설치된 모듈에서 사용하는 Table들을 DB에 자동으로 생성해 준다.  
+` $ ./manage.py migrate`   
+
+
+test 데이터베이스를 확인하면 아래 테이블이 생성되어 있을 것이다.  
+
+- auth_group  
+- auth_group_permissions  
+- auth_permission  
+- auth_user  
+- auth_user_groups  
+- django_admin_log  
+- django_content_type  
+- django_migrations  
+- django_session  
+
+
+<br>
+
+서버를 띄워보자  
+`$ python manage.py runserver`
+
+`http://127.0.0.1:8000/`
+
+<br><br><br>
+<br><br><br>
+
 # 데이터베이스 모델 만들기  
 
 `$ python manage.py makemigrations blog`  
@@ -189,9 +254,6 @@ admin.site.register(Post)
 
 로그인을 하려면 슈퍼유저를 생성해야 한다.  
 `$ python manage.py createsuperuser`  
-
-kkwonsy  
-ssyang0@naver.com  
 
 
 <br><br><br>
