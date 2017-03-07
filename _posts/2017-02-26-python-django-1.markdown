@@ -21,6 +21,10 @@ https://www.python.org/downloads/release/python-343/
 # 버전 확인  
 `$ python3 -- version`  
 
+# upgrade?  
+사이트에서 상위 버전 설치 후 **.bash_profile** 에서 수정.  
+그 뒤 `source .bash_profile` 명령어 실행할 것  1
+
 <br><br><br>
 
 # Django란?  
@@ -49,6 +53,16 @@ $ python3 -m venv myvenv
 # Django 설치  
 
 `$ pip install django==1.8`  
+
+# upgrade Django?  
+`$ pip install -U Django`  
+
+**test**  
+`$ python -Wall manage.py test`  
+
+`$ django-admin version`  
+
+
 
 <br><br><br>
 <br><br><br>
