@@ -102,6 +102,52 @@ if settings.DEBUG:
 <br><br><br>
 
 
+# Show realated data to ModelAdmin  
+{% highlight ruby %}
+    def get_queryset(self, request):
+        qs = super(ClippedRawDataAdmin, self).get_queryset(request)
+        return qs.annotate(comment_count=Count('clippedrawcommentdata'), seed_count=Count('clippedseeddata'))
+
+    def get_comment_count(self, obj):
+        return obj.comment_count
+    get_comment_count.short_description = 'comment count'
+{% endhighlight %}
+
+
+<br><br><br>
+
+
+# Multiple columns for FOREIGNKEY in DJANGO  
+https://pypi.python.org/pypi/django-composite-foreignkey   
+
+<br><br><br>
+
+# Extend chage_view  
+http://rahmonov.me/posts/customize-django-admin-templates/  
+
+
+<br><br><br>
+
+# django admin, Make a link to a list field
+https://eureka.ykyuen.info/2014/12/12/django-sort-the-djano-admin-list-table-by-specific-field/  
+
+
+
+# Make a query in select column  
+{% highlight ruby %}
+def get_queryset(self, request):
+    qs = super(CustomAdmin, self).get_queryset(request).extra(
+        select={
+            'comment_count': 'SELECT COUNT(table2.id) '
+                             'FROM table2 '
+                             'WHERE table2.f_id = table1.id'
+        },
+    )
+{% endhighlight %}
+
+
+<br><br><br>
+
 
 
 장고 튜토리얼 잘된 번역 사이트  
@@ -121,7 +167,6 @@ https://milooy.wordpress.com/2016/07/27/django-admin-customizing/
 
 
 <br><br><br>
-
 
 
 

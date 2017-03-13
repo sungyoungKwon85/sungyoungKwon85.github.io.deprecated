@@ -133,7 +133,25 @@ def DisplayMyPage(request):
 {% endhighlight %}
 
 
+<br><br><br>
 
+
+# How to set default value of inline field  
+{% highlight ruby %}
+# set default value
+def get_formset(self, request, obj=None, **kwargs):
+    initial = []
+    if request.method == "GET":
+        initial.append({
+            'updated': datetime.now(),
+            'staff_seq': request.user,
+        })
+    formset = super(SeedDataInline, self).get_formset(request, obj, **kwargs)
+    formset.__init__ = curry(formset.__init__, initial=initial)
+    return formset
+
+***
+{% endhighlight %}
 
 
 
