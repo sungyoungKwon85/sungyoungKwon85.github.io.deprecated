@@ -12,11 +12,17 @@ categories: python-django
 <br><br><br>
 
 
+
+
+
+
+
+
 # How to show model list to Admin  
 http://djangobook.com/customizing-change-lists-forms/  
 {% highlight ruby %}
-class ClippedSeedDataAdmin(admin.ModelAdmin):
-    list_display = ('seed_uid', 'raw_uid', 'question', 'answer', 'staff_seq', 'updated')
+class SAdmin(admin.ModelAdmin):
+    list_display = ('s_id', 'r_id', 'question', 'answer', 'staff', 'updated')
     list_display_links = ('question',)
     ordering = ('-updated',)
     search_fields = ('question',)
@@ -25,44 +31,57 @@ class ClippedSeedDataAdmin(admin.ModelAdmin):
         return False
 
 
-admin.site.register(ClippedSeedData, ClippedSeedDataAdmin)
+admin.site.register(SData, SAdmin)
 {% endhighlight %}
 
 <br><br><br>
+
+
+
+
+
+
 
 
 # How to show join results to detail view(edit view)  
 http://brownbears.tistory.com/101  
 {% highlight ruby %}
 # models.py
-class ClippedRawData(models.Model):
-    raw_uid = models.CharField(primary_key=True, max_length=32)
+class RData(models.Model):
+    r_id = models.CharField(primary_key=True, max_length=32)
     ...
 
 
-class ClippedRawCommentData(models.Model):
-    comment_uid = models.CharField(primary_key=True, max_length=32, editable=False)
-    raw_uid = models.ForeignKey(ClippedRawData, db_column='raw_uid')
+class Comment(models.Model):
+    comment_id = models.CharField(primary_key=True, max_length=32, editable=False)
+    r_id = models.ForeignKey(RawData, db_column='r_id')
     ...
 
 
 # admin.py
-class CommentDataInline(admin.TabularInline):
-    model = ClippedRawCommentData
-    fk_name = 'raw_uid'
+class CommentInline(admin.TabularInline):
+    model = Comment
+    fk_name = 'r_id'
     extra = 0
     ...
 
 
-class ClippedRawDataAdmin(admin.ModelAdmin):
+class RAdmin(admin.ModelAdmin):
     ...
-    inlines = [CommentDataInline, SeedDataInline, ]
+    inlines = [CommentInline, SDataInline, ]
     ...
 
 {% endhighlight %}
 
 
 <br><br><br>
+
+
+
+
+
+
+
 
 
 
@@ -95,6 +114,12 @@ if settings.DEBUG:
 
 <br><br><br>
 
+
+
+
+
+
+
 # MultiValueDictKeyError  
 `comment_uid = models.CharField(primary_key=True, max_length=32, editable=False)`  
 
@@ -102,11 +127,18 @@ if settings.DEBUG:
 <br><br><br>
 
 
-# Show realated data to ModelAdmin  
+
+
+
+
+
+
+
+# Group by and Count between two models to ModelAdmin  
 {% highlight ruby %}
     def get_queryset(self, request):
-        qs = super(ClippedRawDataAdmin, self).get_queryset(request)
-        return qs.annotate(comment_count=Count('clippedrawcommentdata'), seed_count=Count('clippedseeddata'))
+        qs = super(RAdmin, self).get_queryset(request)
+        return qs.annotate(comment_count=Count('comment'), s_count=Count('sdata'))
 
     def get_comment_count(self, obj):
         return obj.comment_count
@@ -117,10 +149,10 @@ if settings.DEBUG:
 <br><br><br>
 
 
-# Multiple columns for FOREIGNKEY in DJANGO  
-https://pypi.python.org/pypi/django-composite-foreignkey   
 
-<br><br><br>
+
+
+
 
 # Extend chage_view  
 http://rahmonov.me/posts/customize-django-admin-templates/  
@@ -128,8 +160,19 @@ http://rahmonov.me/posts/customize-django-admin-templates/
 
 <br><br><br>
 
+
+
+
+
+
+
 # django admin, Make a link to a list field
 https://eureka.ykyuen.info/2014/12/12/django-sort-the-djano-admin-list-table-by-specific-field/  
+
+
+
+
+
 
 
 
@@ -150,20 +193,163 @@ def get_queryset(self, request):
 
 
 
-장고 튜토리얼 잘된 번역 사이트  
-https://tutorial.djangogirls.org/ko/django_orm/  
-http://djangogo.tistory.com/entry/Djangogo-6-%EB%AA%A8%EB%8D%B8%EC%97%90-%EB%A7%9E%EB%8A%94-Django%EA%B4%80%EB%A6%AC%EC%82%AC%EC%9D%B4%ED%8A%B8-%EC%83%9D%EC%84%B1%ED%95%98%EA%B8%B0  
+
+
+
+
+# 데이터베이스 연결 시간 제한?  
+https://docs.djangoproject.com/en/1.10/ref/databases/#mysql-db-api-drivers  
+https://docs.djangoproject.com/en/1.8/ref/settings/#std:setting-CONN_MAX_AGE  
+MySQLdb는 python3 지원 안된다고 함, 대신 mysqlclient가 MySQLdb based이고 python3를 지원하여 recommended 이다.  
+slow query가 없는 듯 하여 원인 파악이 어려운 상태지만 아래 코드는 connection timeout를 건 것.
+{% highlight ruby %}
+'CONN_MAX_AGE': 60,
+{% endhighlight %}
+
+
 <br><br><br>
 
-# 장고 튜토리얼 영문 사이트  
+
+
+
+
+
+
+
+# date field, 편집은 안되고 자동 현재 시간을 하고 싶다.  
+{% highlight ruby %}
+auto_now=True
+{% endhighlight %}
+
+<br><br><br>
+
+
+
+
+
+
+
+
+# Django Admin Excel exporting  
+https://django-import-export.readthedocs.io/en/latest/installation.html  
+{% highlight ruby %}
+pip install django-import-export
+
+# settings.py
+INSTALLED_APPS = (
+    ...
+    'import_export',
+)
+{% endhighlight %}
+
+
+
+
+
+
+<br><br><br>
+
+
+
+
+
+
+# Tags + autocomplte  
+https://godjango.com/33-tagging-with-django-taggit/  
+http://django-taggit.readthedocs.io/en/latest/forms.html  
+http://django-autocomplete-light.readthedocs.io/en/3.1.3/tutorial.html#using-autocompletes-in-the-admin  
+{% highlight ruby %}
+pip install django-taggit
+
+# settings.py
+INSTALLED_APPS = [
+  'dal',
+  'dal_select2',
+  'taggit',
+  'django.contrib.admin',
+  ...
+]
+
+
+# models.my
+from taggit.managers import TaggableManager
+
+class AModel:
+  ...
+  tags = TaggableManager(blank=True)
+
+
+# admin.py
+from adminapp.forms import TagModelForm
+
+class AInline(TabularInline):
+  fieldsets = (
+    (None, {'fieldls': ('title', ('tags'), ... )})
+    )
+    ...
+    form = TagModelForm
+
+class AAdmin(ModelAmdin):
+  ...
+  form = TagModelForm
+  ...
+
+# view.py
+from dal import autocomplete
+from taggit.models import Tag
+
+class TagAutocomplete(autocomplete.Select2QuerySetView):
+
+    def get_queryset(self):
+        # Don't forget to filter out results depending on the visitor !
+        if not self.request.user.is_authenticated():
+            return Tag.objects.none()
+
+        qs = Tag.objects.all()
+
+        if self.q:
+            qs = qs.filter(name__istartswith=self.q)
+
+        return qs  
+
+
+# forms.py
+from django import forms
+from dal import autocomplete
+from adminapp.models import AModel
+
+class TagModelForm(forms.ModelForm):
+    class Meta:
+        model = AModel
+        fields = ('__all__')
+        widgets = {
+            'tags': autocomplete.TaggitSelect2(url='tag-autocomplete', attrs={'size': 80, 'class': 'form-control focused'})
+        }
+
+
+# urls.py
+from adminapp.views import TagAutocomplete
+...
+
+url(r'^tag-autocomplete/$', TagAutocomplete.as_view(), name='tag-autocomplete',)
+
+{% endhighlight %}
+<br><br><br>
+
+
+장고 튜토리얼 잘된 번역 사이트  
+
+<br><br><br>
+
+# 장고 튜토리얼 사이트  
+https://tutorial.djangogirls.org/ko/django_orm/  
+http://djangogo.tistory.com/entry/Djangogo-6-%EB%AA%A8%EB%8D%B8%EC%97%90-%EB%A7%9E%EB%8A%94-Django%EA%B4%80%EB%A6%AC%EC%82%AC%EC%9D%B4%ED%8A%B8-%EC%83%9D%EC%84%B1%ED%95%98%EA%B8%B0  
 https://developer.mozilla.org/en-US/docs/Learn/Server-side/Django/Admin_site  
 
 <br><br><br>
 
-# 장고 어드민 커스터마이즈 좋은 사이트(한글)  
-https://milooy.wordpress.com/2016/07/27/django-admin-customizing/  
-
-
+# 장고 packages  
+https://djangopackages.org/packages/p/django-autocomplete-light/
 
 
 <br><br><br>

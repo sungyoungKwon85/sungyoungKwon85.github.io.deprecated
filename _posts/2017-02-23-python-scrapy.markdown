@@ -141,9 +141,10 @@ ppomppu.co.kr/robots.txt 확인하면 크롤링 허용 정보를 알 수 있다.
 
 
 
+<br><br><br>
 
-
-
+# scrapy-redis  
+https://scrapy-redis.readthedocs.io/en/stable/readme.html  
 
 
 
