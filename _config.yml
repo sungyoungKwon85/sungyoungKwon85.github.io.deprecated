@@ -15,7 +15,7 @@
 # in the templates via {{ site.myvariable }}.
 title: kkwonsy's blog
 email: ssyang0@naver.com
-description: I am learning a github page. Happy 2017!  
+description: Happy 2017!  
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "" # the base hostname & protocol for your site, e.g. http://example.com
 twitter_username:
