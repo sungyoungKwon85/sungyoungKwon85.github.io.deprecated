@@ -38,6 +38,12 @@ view에서 result를 생성하면 장고가 web browser에 보내주는 역할�
 <br><br><br>
 
 # 가상환경 사용하기  
+[Conda vs pip vs virtualenv]  
+Pip is a package manager, and Virtualenv is an environment manager. Conda is both.  
+
+[Conda vs pip vs virtualenv]: https://conda.io/docs/_downloads/conda-pip-virtualenv-translator.html
+
+
 {% highlight ruby %}
 $ mkdir djangogirls
 $ cd djangogirls

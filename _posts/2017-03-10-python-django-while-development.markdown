@@ -260,6 +260,7 @@ http://django-taggit.readthedocs.io/en/latest/forms.html
 http://django-autocomplete-light.readthedocs.io/en/3.1.3/tutorial.html#using-autocompletes-in-the-admin  
 {% highlight ruby %}
 pip install django-taggit
+pip install django-autocomplete-light
 
 # settings.py
 INSTALLED_APPS = [
@@ -334,6 +335,42 @@ from adminapp.views import TagAutocomplete
 url(r'^tag-autocomplete/$', TagAutocomplete.as_view(), name='tag-autocomplete',)
 
 {% endhighlight %}
+<br>
+**Slug?**  
+<br>
+Slugs are used in permalinks structure.  
+It is a simple id of posts and pages or tag.  
+
+<br><br><br>
+# [admin menu bar]   
+[admin menu bar]: https://github.com/cdrx/django-admin-menu
+{% highlight ruby %}
+pip install django-admin-menu
+
+INSTALLED_APPS = [
+    'admin_menu',
+
+ADMIN_LOGO = 'logo.png' # option
+
+# option
+MENU_WEIGHT = {
+    'World': 20,
+    'Auth': 4,
+    'Sample': 5
+}
+
+class MyAdmin(admin.ModelAdmin):
+    menu_title = "Users"
+    menu_group = "Staff"
+
+# changelists.css
+
+{% endhighlight %}
+
+
+
+
+
 <br><br><br>
 
 
@@ -354,10 +391,7 @@ https://djangopackages.org/packages/p/django-autocomplete-light/
 
 <br><br><br>
 
-
-
 {% highlight ruby %}
-
 {% endhighlight %}
 
 

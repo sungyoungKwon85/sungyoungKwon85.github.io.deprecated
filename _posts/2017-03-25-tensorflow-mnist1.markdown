@@ -135,9 +135,6 @@ print(sess.run(accuracy, feed_dict={x: mnist.test.images, y_: mnist.test.labels}
 
 
 
-
-
-
 <br><br><br>
 
 {% highlight ruby %}
