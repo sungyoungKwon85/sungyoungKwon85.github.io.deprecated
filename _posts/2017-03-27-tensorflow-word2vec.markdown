@@ -7,6 +7,7 @@ categories: tensorflow
 
 ## [Mining English and Korean text with Python]  
 [Mining English and Korean text with Python]: https://www.lucypark.kr/courses/2015-ba/text-mining.html#  
+한글 : https://www.lucypark.kr/courses/2015-dm/text-mining.html  
 
 **use Python 3**  
 
@@ -30,6 +31,9 @@ categories: tensorflow
 <br><br>
 
 # Python Packages for Text Mining and NLP
+
+http://konlpy.org/ko/v0.4.3/install/  
+
 {% highlight ruby %}
 # 1. install NLTK(자연어처리용 python lib)
 # 2. install KoNLPy(한글처리)
@@ -37,9 +41,12 @@ categories: tensorflow
 # 4. install Twitter API(twitter api 쉽게 사용하기 위함)
 pip install nltk
 pip install konlpy
+pip3 install konlpy # python3
 pip install -U gensim
 pip install twython
 {% endhighlight %}
+
+
 
 <br><br>
 
@@ -55,6 +62,15 @@ doc_ko = kobill.open('1809890.txt').read()
 # 2. Tokenize
 from konlpy.tag import Twitter; t = Twitter()
 tokens_ko = t.morphs(doc_ko)
+
+#여기서 no module named 'jpype' 라는 오류가 발생.
+# http://jpype.readthedocs.io/en/latest/install.html 를 참고하여 아래의 명령어를 사용
+
+$ conda install -c conda-forge jpype1
+
+# t = Twitter() 부분에서 아래와 같은 에러가 발생.... 뭘까?
+# TypeError: Package kr.lucypark.tkt.TktInterface is not Callable
+
 
 
 

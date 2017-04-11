@@ -11,8 +11,8 @@ categories: tensorflow
 
 <br><br><br>
 <br><br><br>
-# Tensorflow 다운로드 및 설치  
-https://tensorflowkorea.gitbooks.io/tensorflow-kr/content/g3doc/get_started/os_setup.html  
+# [Tensorflow 다운로드 및 설치]  
+[Tensorflow 다운로드 및 설치]: https://tensorflowkorea.gitbooks.io/tensorflow-kr/content/g3doc/get_started/os_setup.html  
 
 ### 가상환경 사용하기  
 가상환경은 virtualevn 말고도 anaconda, docker 등을 선택할 수 있다.  
@@ -42,16 +42,16 @@ $ sudo pip3 install --upgrade $TF_BINARY_URL
 {% highlight ruby %}
 $ python
 ...
->>> import tensorflow as tf
->>> hello = tf.constant('Hello, TensorFlow!')
->>> sess = tf.Session()
->>> print(sess.run(hello))
-Hello, TensorFlow!
->>> a = tf.constant(10)
->>> b = tf.constant(32)
->>> print(sess.run(a + b))
-42
->>>
+import tensorflow as tf
+hello = tf.constant('Hello, TensorFlow!')
+sess = tf.Session()
+print(sess.run(hello))
+  Hello, TensorFlow!
+a = tf.constant(10)
+b = tf.constant(32)
+print(sess.run(a + b))
+  42
+
 {% endhighlight %}
 
 
@@ -85,8 +85,8 @@ $ python /usr/local/lib/python3.5/dist-packages/tensorflow/models/image/mnist/co
 
 <br><br><br>
 <br><br><br>
-# Tensorflow 기본사용법  
-https://tensorflowkorea.gitbooks.io/tensorflow-kr/content/g3doc/get_started/basic_usage.html  
+# [Tensorflow 기본사용법]  
+[Tensorflow 기본사용법]: https://tensorflowkorea.gitbooks.io/tensorflow-kr/content/g3doc/get_started/basic_usage.html  
 - 연산은 graph로 표현  
 - graph는 Session내에서 실행  
 - 데이터는 tensor(정형화된 다차원 배열)로 표현  
@@ -94,6 +94,43 @@ https://tensorflowkorea.gitbooks.io/tensorflow-kr/content/g3doc/get_started/basi
 - operation(graph에 있는 노드)에서 데이터를 입출력할 때 feed와 fetch를 사용할 수 있음  
 - operation은 0개 이상의 Tensor를 가질 수 있음  
 
+<br><br><br>
+
+<br><br><br>
+
+<br><br><br>
+
+# [Conda Install and settings link 1]  
+[Conda Install and settings link 1]: http://creativeworks.tistory.com/entry/%EC%95%84%EB%82%98%EC%BD%98%EB%8B%A4Anaconda%EC%97%90-TensorFlow-%EC%84%A4%EC%B9%98%ED%95%98%EA%B8%B0-on-Mac-Installing-TensorFlow-at-Anaconda-on-MAC-OS-X
+# [Conda Install and settings link 2]  
+[Conda Install and settings link 2]: http://egloos.zum.com/mataeoh/v/7052271
+
+<br><br><br>
+
+# [Conda Download]
+[Conda Download]: https://conda.io/docs/download.html
+
+<br><br><br>
+
+
+# Conda 가상환경 생성 및 tensorflow 설치  
+{% highlight ruby %}
+#python 3.5
+$ conda create -n tensorflow python=3.5
+
+$ source activate tensorflow
+
+# Mac OS X, CPU 전용, Python 3.4 or 3.5:
+(tensorflow)$ export TF_BINARY_URL=https://storage.googleapis.com/tensorflow/mac/cpu/tensorflow-1.0.1-py3-none-any.whl
+
+# Python 3
+(tensorflow)$ pip3 install --upgrade $TF_BINARY_URL
+{% endhighlight %}
+
+# 가상환경 정보 보기
+$ conda info --envs
+
+<br><br><br>
 
 .
 {% highlight ruby %}

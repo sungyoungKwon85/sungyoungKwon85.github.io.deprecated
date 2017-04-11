@@ -1,9 +1,12 @@
 ---
 layout: post
 title:  "docker"
-date:   2017-04-02 13:10:53 +0900
+date:   2017-04-10 13:10:53 +0900
 categories: docker
 ---
+
+## [To see]
+[To see]: http://jojoldu.tistory.com/139
 
 ##  [Docker]  
 [Docker]: http://pyrasis.com/private/2014/11/30/publish-docker-for-the-really-impatient-book

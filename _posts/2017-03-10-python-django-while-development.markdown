@@ -230,8 +230,8 @@ auto_now=True
 
 
 
-# Django Admin Excel exporting  
-https://django-import-export.readthedocs.io/en/latest/installation.html  
+# [Django Admin Excel exporting]  
+[Django Admin Excel exporting]: https://django-import-export.readthedocs.io/en/latest/installation.html  
 {% highlight ruby %}
 pip install django-import-export
 
@@ -240,9 +240,35 @@ INSTALLED_APPS = (
     ...
     'import_export',
 )
+
+# admin.py
+class MyResource(resources.ModelResource):
+    class Meta:
+        model = MyData
+        import_id_fields = ('my_uid',)
+        exclude = ('tags',)
+
+class MyAdmin(ImportExportModelAdmin):
+    ...
+    resource_class = SeedDataResource
 {% endhighlight %}
 
+<br>
 
+**2017-04-10**  
+Mac에서 잘 됐으나 개발 CentOS 서버에서는 import error가 발생했다.  
+여러가지를 시도 해 보았으나 아래의 코드가 적절하게 동작했다.  
+가상환경에서 python3와 python2에 대해서 왔다갔다 동작하는 듯?  
+Mac, CentOS 모두 Python3.5.2이고, package도 똑같이 설치했는데.....   
+parse는 /Library/Frameworks/Python.framework/Versions/3.5/lib/python3.5/urllib/parse.py 경로에 위치한다.  
+
+{% highlight ruby %}
+# diff_match_patch.py
+try:
+    from urllib.parse import urlparse
+except ImportError:
+     from urlparse import urlparse
+{% endhighlight %}
 
 
 
@@ -367,8 +393,89 @@ class MyAdmin(admin.ModelAdmin):
 
 {% endhighlight %}
 
+<br>
+**20170405**  
+* django-admin-menu package적용하려함
+* MAC환경에서 잘 동작하지만 Linux 환경에서 문제발생
+* libsass, sass import 문제
+* gcc compiler version/centos 일 수 있음
+* 결국 [suit package]를 적용
+    * pip uninstall django-admin-menu
+    * pip install django-suit==0.2.25
+    * settings.py > ‘suit’ 추가
+
+[suit package]: https://django-suit.readthedocs.io/en/develop/sortables.html
+
+<br><br>
+**20170406**   
+* [Django Jet]
+* [sass]
+* [luby-sass-install]
+{% highlight ruby %}
+# suit의 경우 dom 구조가 기존에서 변경이 되어 다른 interface로 변경을 했다.  
+# [Django Jet]가 적합해 보였다.
+# 참고 : ./manage.py collectstatic 은 DEBUG=False 일 때 사용한다. static폴더를 설정한 경로로 static file이 모인다.  
+$ pip install django-jet
 
 
+# settings.py
+INSTALLED_APPS = (
+    ...
+    'jet',
+
+# urls.py
+urlpatterns = patterns(
+    '',
+    url(r'^jet/', include('jet.urls', 'jet')),  # Django JET URLS
+
+$ ./manage.py migrate jet
+$ ./manage.py collectstatic
+{% endhighlight %}
+
+<br><br>
+
+css 변경이 필요해 살펴보니 .scss 확장자명을 가진 파일이 보였다.  
+sass라는 CSS를 더욱 효율적으로 사용토록 해주는 녀석이다.  
+이 녀석을 쓰려면 sass를 설치해야 하고, ruby로 만들어졌기 때문에 linux에 luby 설치가 필요했다.  
+{% highlight ruby %}
+$ yum install rubygems
+$ gem install sass
+
+# scss 파일 수정후
+$ sass --watch a.scss:a.css
+{% endhighlight %}
+
+<br><br>
+
+local과 dev, prd 서버가 각기 다른 migration 파일을 가지고 있어서 혼란스러운 상황.  
+jenkins이 migration 폴더까지 덮어씌우고 있기 때문에 **앞으로는 migration 폴더까지 정리해서 반영할 필요가 있다.**  
+이미 지워진 table을 지우려고 하는가 하면, 중요 테이블관련하여 foeignkey 연관된 것을 삭제할까 물어보기도 한다. 일단 no..  
+**이미 생성된 table때문에 migrate가 되지 않는 경우에는 ./manage.py migrate --fake 를 사용하면 된다.**  
+{% highlight ruby %}
+# migrate 디렉토리가 jenkins소유로 되어 있어 makemigrations하는데 유저 변경이 필요했다.
+sudo chown -R username:group directory
+
+# 배포할때 유저를 원복해야 한다.
+{% endhighlight %}
+
+<br><br>
+
+[Django Jet]: http://jet.readthedocs.io/en/latest/install.html
+[sass]: http://sass-lang.com/
+[luby-sass-install]: https://www.cmsfactory.net/node/11750
+
+{% highlight ruby %}
+# jet의 경우 edit page에서 previous/next item으로 넘어가는 기능을 제공한다.
+# 이 때 full scan이 일어나 60만건이 넘는 데이터를 읽는데 성능이 매우 안좋아진다.
+# 해당 내용 부분을 삭제했다.
+
+# myvenv/lib/python3.5/site-packages/jet/templates/admin/base.html
+   if change and show_siblings
+        <div class="changeform-navigation">
+            ...
+        </div>
+   endif
+{% endhighlight %}
 
 
 <br><br><br>

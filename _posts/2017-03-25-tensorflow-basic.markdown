@@ -5,10 +5,17 @@ date:   2017-03-25 16:10:53 +0900
 categories: tensorflow
 ---
 
-# Tensorflow 기본사용법  
-아래 링크의 내용을 요약정리 했다.  
-https://tensorflowkorea.gitbooks.io/tensorflow-kr/content/g3doc/get_started/basic_usage.html  
+# [유투브]  
+[유투브]: https://www.youtube.com/watch?v=BQEhUD2XTaATensorflow  
+# [유투브 MNIST test source]  
+[유투브 MNIST test source]: https://github.com/ahn-kj/javacafe-tensorflow
+# [강의 사이트]  
+[강의 사이트]: http://hunkim.github.io/ml/
+
 <br><br><br>
+# [Tensorflow 기본사용법]   
+[Tensorflow 기본사용법]: https://tensorflowkorea.gitbooks.io/tensorflow-kr/content/g3doc/get_started/basic_usage.html  
+<br>
 
 - graph  
 - Session  
