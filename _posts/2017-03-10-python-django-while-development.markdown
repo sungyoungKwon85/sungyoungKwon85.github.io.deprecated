@@ -2,7 +2,7 @@
 layout: post
 title:  "python-django-admin-issues"
 date:   2017-02-28 20:10:53 +0900
-categories: python-django
+categories: python
 ---
 
 어드민 개발하면서 배운 내용 정리  
@@ -480,7 +480,17 @@ sudo chown -R username:group directory
 
 <br><br><br>
 
+# [virtualenv returned non-zero exit status 1]  
+[virtualenv returned non-zero exit status 1]: http://askubuntu.com/questions/488529/pyvenv-3-4-error-returned-non-zero-exit-status-1  
 
+어떤 이유에선지 모르겠으나 virtualenv 설치가 되지 않는다.  
+pip 설치 없이 설치가 가능한데, 이러면 pip 설치가 별도로 필요..한줄 알았는데 pip를 쳐보면 나온다. 깔려있네?    
+
+{% highlight ruby %}
+pyvenv-3.5 --without-pip myvenv
+{% endhighlight %}
+
+<br><br><br>
 장고 튜토리얼 잘된 번역 사이트  
 
 <br><br><br>

@@ -2,7 +2,7 @@
 layout: post
 title:  "tensorflow-mnist1"
 date:   2017-03-25 17:10:53 +0900
-categories: tensorflow
+categories: machine-learning
 ---
 
 

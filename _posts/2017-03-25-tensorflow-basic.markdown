@@ -2,7 +2,7 @@
 layout: post
 title:  "tensorflow-basic"
 date:   2017-03-25 16:10:53 +0900
-categories: tensorflow
+categories: machine-learning
 ---
 
 # [유투브]  

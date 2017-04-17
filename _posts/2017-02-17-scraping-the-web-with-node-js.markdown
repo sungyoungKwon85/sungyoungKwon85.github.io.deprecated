@@ -2,7 +2,7 @@
 layout: post
 title:  "scraping-the-web-with-node-js"
 date:   2017-02-17 22:10:53 +0900
-categories: scraping-the-web-with-node-js
+categories: nodejs
 ---
 
 

@@ -2,7 +2,7 @@
 layout: post
 title:  "tensorflow-install"
 date:   2017-03-25 15:10:53 +0900
-categories: tensorflow
+categories: machine-learning
 ---
 
 머신 러닝 관련된 내용들을 학습한다.  
@@ -10,12 +10,18 @@ categories: tensorflow
 
 
 <br><br><br>
-<br><br><br>
-# [Tensorflow 다운로드 및 설치]  
-[Tensorflow 다운로드 및 설치]: https://tensorflowkorea.gitbooks.io/tensorflow-kr/content/g3doc/get_started/os_setup.html  
 
+# [Tensorflow 다운로드 및 설치 kr]  
+[Tensorflow 다운로드 및 설치 kr]: https://tensorflowkorea.gitbooks.io/tensorflow-kr/content/g3doc/get_started/os_setup.html  
+# [Tensorflow 다운로드 및 설치 en]  
+[Tensorflow 다운로드 및 설치 en]: https://www.tensorflow.org/install/install_mac  
+
+<br><br><br>
 ### 가상환경 사용하기  
 가상환경은 virtualevn 말고도 anaconda, docker 등을 선택할 수 있다.  
+**We recommend the virtualenv installation.**  
+**within Anaconda, we recommend installing TensorFlow with the pip install command, not with the conda install command.**  
+**We strongly recommend pip or pip3 version 8.1 or higher**  
 
 {% highlight ruby %}
 $ mkdir hellotensorflow
@@ -32,7 +38,6 @@ GPU는 mac에서 테스트할 수 없기 때문에 skip한다.
 # Mac OS X, CPU 전용, Python 3.4 or 3.5:
 $ export TF_BINARY_URL=https://storage.googleapis.com/tensorflow/mac/tensorflow-0.9.0-py3-none-any.whl
 
-# Python 3
 $ sudo pip3 install --upgrade $TF_BINARY_URL
 {% endhighlight %}
 
@@ -51,8 +56,48 @@ a = tf.constant(10)
 b = tf.constant(32)
 print(sess.run(a + b))
   42
-
 {% endhighlight %}
+
+**20170411**  
+no module named tensorflow 라는 문구가 뜨면서 import가 안되는 경우가 있다.  
+{% highlight ruby %}
+$ pip install --upgrate tensorflow # 시도
+{% endhighlight %}
+0.9.0 설치했고 현재는 1.0.1 버전이 최신이다.  
+여전히 동작하지 않는다.  
+아래와 같이 버전을 확인해보니 anaconda와 연결이 되어 있다.  
+현재 아나콘다를 사용하는 프로젝트가 없으므로 [아나콘다 삭제] 를 시도.  
+{% highlight ruby %}
+$ python3 --version
+Python 3.6.0 :: Anaconda 4.3.1 (x86_64)
+
+$ conda install anaconda-clean
+$ anaconda-clean
+$ rm -rf ~/anaconda3
+$ sudo vi .bash_profile
+# anaconda 경로를 주석처리 해줘야 한다.
+bash: /Users/1100459/anaconda/bin/python3: No such file or directory
+# 뭐지?
+$ virtualenv
+$ python3 --version
+anaconda/bin/virtualenv: No such file or directory
+
+$ python --version
+# mac에는 기본적으로 2.7 버전의 python이 설치되어 있다.
+
+$ source .bash_profile
+# 이거 해줘야 갱신됨 -.-;;
+
+# 이제 tensorflow import 된다~~~
+# 아래는 공식홈 튜토리얼
+$ sudo easy_install pip
+$ sudo pip install --upgrade virtualenv
+$ virtualenv --system-site-packages targetDirectory
+$ source ~/tensorflow/bin/activate
+pip3 install --upgrade tensorflow     # for Python 3.n
+{% endhighlight %}
+[아나콘다 삭제]: https://docs.continuum.io/anaconda/install#os-x-uninstall
+
 
 
 <br><br><br>

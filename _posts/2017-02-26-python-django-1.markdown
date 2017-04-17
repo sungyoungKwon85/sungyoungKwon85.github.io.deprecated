@@ -2,7 +2,7 @@
 layout: post
 title:  "python-django-setting"
 date:   2017-02-25 17:10:53 +0900
-categories: python-django
+categories: python
 ---
 
 참고 :  

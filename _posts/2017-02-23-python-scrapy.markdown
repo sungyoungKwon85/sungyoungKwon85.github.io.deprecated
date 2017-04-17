@@ -2,7 +2,7 @@
 layout: post
 title:  "python-scrapy"
 date:   2017-02-23 00:10:53 +0900
-categories: python-scrapy
+categories: python
 ---
 
 BeautifulSoup과 Scrapy가 인기있는 크롤링 라이브러리  

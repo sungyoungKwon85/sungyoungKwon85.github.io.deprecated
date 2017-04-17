@@ -1,8 +1,8 @@
 ---
 layout: post
-title:  "tensorflow-word2vec"
-date:   2017-03-27 11:10:53 +0900
-categories: tensorflow
+title:  "gensim-word2vec"
+date:   2017-04-12 11:10:53 +0900
+categories: machine-learning
 ---
 
 ## [Mining English and Korean text with Python]  
@@ -100,6 +100,25 @@ ko.concordance('초등학교')
 ko.similar('자녀')
 ko.similar('육아휴직')
 {% endhighlight %}
+**20170412**  
+- No module named 'jpype' 라는 에러가 출력되어 아래처럼 추가 설치를 했음.  
+{% highlight ruby %}
+$ pip3 install JPype1-py3
+{% endhighlight %}
+
+- The plot function requires matplotlib to be installed. 에러가 출력되어 아래처럼 추가 설치 했음.  
+{% highlight ruby %}
+pip install -U matplotlib
+{% endhighlight %}
+
+- 아래와 같은 에러메시지 출력되어 [Problem Cause In mac os image rendering back end of matplotlib] 내용 참고하여 해결!  
+Python is not installed as a framework. The Mac OS X backend will not be able to function correctly if Python is not installed as a framework. See the Python documentation for more information on installing Python as a framework on Mac OS X. Please either reinstall Python as a framework, or try one of the other backends. If you are using (Ana)Conda please install python.app and replace the use of 'python' with 'pythonw'. See 'Working with Matplotlib on OSX' in the Matplotlib FAQ for more information.  
+{% highlight ruby %}
+$ cd ~/.matplotlib
+$ vi matplotlibrc
+backend: TkAgg # 입력
+{% endhighlight %}
+[Problem Cause In mac os image rendering back end of matplotlib]: http://stackoverflow.com/questions/21784641/installation-issue-with-matplotlib-python
 
 <br><br>
 
