@@ -2,7 +2,7 @@
 layout: post
 title:  "tensorflow-word2vec"
 date:   2017-04-13 14:10:53 +0900
-categories: tensorflow
+categories: machine-learning
 ---
 
 ## [tensorflow word2vec]
