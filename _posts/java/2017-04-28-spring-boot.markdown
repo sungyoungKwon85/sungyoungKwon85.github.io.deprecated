@@ -345,8 +345,36 @@ http://sejong-wiki.appspot.com/assertThat
 <br><br><br>
 
 
-#
+# [Create a deployable war file], 배포하기  
+전통적인 상용 서버, 톰캣, war 배포가 필요한 경우 아래와 같이 진행한다.  
+클라우드 서버를 사용한다면 CLI를 이용한 배포가 가능하다.  
+{% highlight ruby %}
+@SpringBootApplication
+public class Application extends SpringBootServletInitializer {
 
+    @Override
+    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+        return application.sources(Application.class);
+    }
+
+    public static void main(String[] args) throws Exception {
+        SpringApplication.run(Application.class, args);
+    }
+
+}
+
+<packaging>war</packaging>
+
+<dependencies>
+    <!-- … -->
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-tomcat</artifactId>
+        <scope>provided</scope>
+    </dependency>
+    <!-- … -->
+</dependencies>
+{% endhighlight %}
 
 
 
@@ -360,6 +388,7 @@ http://sejong-wiki.appspot.com/assertThat
 [Spring Boot Reference Guide]: http://docs.spring.io/spring-boot/docs/current/reference/html/using-boot-structuring-your-code.html
 [Redis autoConfiguration]: https://github.com/spring-projects/spring-boot/blob/v1.5.0.RC1/spring-boot-autoconfigure/src/main/java/org/springframework/boot/autoconfigure/cache/RedisCacheConfiguration.java#L55-L64
 [스프링 데이터 레디스 번역]: http://arahansa.github.io/docs_spring/redis.html
+[Create a deployable war file]: http://docs.spring.io/spring-boot/docs/current/reference/html/howto-traditional-deployment.html
 <br><br><br>
 
 {% highlight ruby %}
