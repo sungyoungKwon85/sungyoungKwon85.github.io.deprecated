@@ -1,0 +1,18 @@
+---
+layout: post
+title:  "'account' is not in the sudoers file. this incident will be reported"
+date:   2017-05-25 10:10:53 +0900
+categories: linux
+---
+
+# sudo 명령어가 안먹힌다?  
+root 권한이 없는 계정으로 들어가서 sudo 명령어를 사용하면 'account' is not in the sudoers file. this incident will be reported 라는 메시지가 출력된다.  
+이 문제는 `/etc/sudoers` 에 계정을 추가시켜주면 해결 된다.   
+다만 root권한을 가진 계정이 없으면 저 파일에 접근조차 안되니 당연히 root권한이 있는 계정을 알아야 가능하다.  
+끝.  
+
+
+<br><br><br>
+
+{% highlight ruby %}
+{% endhighlight %}
