@@ -1,0 +1,16 @@
+---
+layout: post
+title:  "GoCD"
+date:   2017-08-03 00:10:53 +0900
+categories: GoCD
+---
+
+참조 : https://www.gocd.org/why-gocd/  
+<br><br>
+
+
+# why-gocd  
+
+### Model complex workflows  
+Parallel 그리고 sequential excution 지원함으로써 쉽고 빠르게 dependencies와 on-demand deployment를 설정할 수 있다.  
+--> fan-in/fan-out dependency management  

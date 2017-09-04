@@ -1,0 +1,32 @@
+---
+layout: post
+title:  "nslookup"
+date:   2017-09-04 10:10:53 +0900
+categories: nslookup
+---
+
+# nslookup  
+
+도메인 이름과 IP주소를 확인하는 기능을 가진 네트워크 관리 툴  
+
+기본적으로 조회가 가능하고,
+![조회하기](https://github.com/sungyoungKwon85/sungyoungKwon85.github.io/blob/master/images/nslookup_select.png?raw=true)
+
+
+변경도 가능하다.  
+{% highlight ruby %}
+> nslookup
+Server: ~~
+Address: 168.*.*.2
+> server 168.*.*.3
+Server: ~~
+Address: 168.*.*.3
+{% endhighlight %}
+
+
+
+<br><br><br>
+
+{% highlight ruby %}
+{% endhighlight %}
+`

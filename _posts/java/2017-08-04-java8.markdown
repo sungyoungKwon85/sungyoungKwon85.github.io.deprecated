@@ -1,0 +1,147 @@
+---
+layout: post
+title:  "java8"
+date:   2017-08-04 10:10:53 +0900
+categories: java
+---
+
+# [Java8 tutorial point]
+
+<br><br><br>
+
+### New Features  
+중요한 features들은 아래와 같다.  
+- Lambda expression  
+- Method references  
+- Default method  
+- New tools  
+- Stream API  
+- Date Time API  
+- Optional  
+- Nashorn, JavaSclript Engine  
+
+<br><br><br>
+
+### Programming Style  
+자바7 vs 자바8  
+{% highlight ruby %}
+   //sort using java 7
+   private void sortUsingJava7(List<String> names){   
+      Collections.sort(names, new Comparator<String>() {
+         @Override
+         public int compare(String s1, String s2) {
+            return s1.compareTo(s2);
+         }
+      });
+   }
+
+   //sort using java 8
+   private void sortUsingJava8(List<String> names){
+      Collections.sort(names, (s1, s2) -> s1.compareTo(s2));
+   }
+{% endhighlight %}
+자바8에서는 lambda expression을 사용했다.  
+
+<br><br><br>
+
+### Syntax  
+Lambda expression은 아래와 같은 Syntax를 따른다.  
+{% highlight ruby %}
+parameter -> expression body
+{% endhighlight %}
+- Optional type declaration
+- Optional parenthesis around parameter
+- Optional curly braces
+- Optional return keyword
+{% highlight ruby %}
+   public static void main(String args[]){
+      //with type declaration
+      MathOperation addition = (int a, int b) -> a + b;
+
+      //with out type declaration
+      MathOperation subtraction = (a, b) -> a - b;
+
+      //with return statement along with curly braces
+      MathOperation multiplication = (int a, int b) -> { return a * b; };
+
+      //without return statement and without curly braces
+      MathOperation division = (int a, int b) -> a / b;
+
+      //without parenthesis
+      GreetingService greetService1 = message ->
+      System.out.println("Hello " + message);
+
+      //with parenthesis
+      GreetingService greetService2 = (message) ->
+      System.out.println("Hello " + message);
+   }
+
+   interface MathOperation {
+      int operation(int a, int b);
+   }
+
+   interface GreetingService {
+      void sayMessage(String message);
+   }
+
+   private int operate(int a, int b, MathOperation mathOperation){
+      return mathOperation.operation(a, b);
+   }
+{% endhighlight %}
+
+<br><br><br>
+
+### Scope  
+Lambda expression을 사용하면, final variable에 refer할 수 있다.  
+만약 variable이 두번 assigned되었다면 컴파일 에러가 발생한다.  
+{% highlight ruby %}
+final static String salutation = "Hello! ";
+
+public static void main(String args[]){
+   GreetingService greetService1 = message ->
+   System.out.println(salutation + message);
+   greetService1.sayMessage("Mahesh");
+}
+
+interface GreetingService {
+   void sayMessage(String message);
+}
+{% endhighlight %}
+
+<br><br><br>
+
+### Method Reference  
+아래 예제와 같이 사용하면 된다.  
+{% highlight ruby %}
+   List names = new ArrayList();
+
+   names.add("Mahesh");
+   names.add("Suresh");
+   names.add("Ramesh");
+   names.add("Naresh");
+   names.add("Kalpesh");
+
+   names.forEach(System.out::println);
+{% endhighlight %}
+
+<br><br><br>
+
+### Functional Interfaces  
+Comparable interface
+
+
+
+
+
+
+
+
+
+
+
+
+[Java8 tutorial point]: https://www.tutorialspoint.com/java8/java8_overview.htm
+<br><br><br>
+
+{% highlight ruby %}
+{% endhighlight %}

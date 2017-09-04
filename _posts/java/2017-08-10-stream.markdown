@@ -1,0 +1,70 @@
+---
+layout: post
+title:  "stream"
+date:   2017-08-10 10:10:53 +0900
+categories: java
+---
+
+# [streams by stackoverflow]
+
+<br><br><br>
+위 링크 stackoverflow의 내용을 번역/정리한다.  
+
+
+<br><br><br>
+Stream은 elements의 연속을 의미하며 이 elements의 계산 수행에 있어 다른 종류의 operations를 제공한다.  
+Java 8의 Collection 인터페이스는 두가지의 메소드를 가진다.  
+- stream()
+- parallelStream()  
+
+Stream operations는 중간 또는 종료가 있다.  
+Intermediate operations는 Stream을 리턴하는데, 여러 intermediate operations는 Stream이 닫히기 전에 chained될 수 있다.  
+Terminal operations는 void 또는 non-stream result를 리턴한다.  
+
+<br><br><br>
+
+### Examples  
+주어진 Stream은 잠제적으로 제한되지 않은 데이터양을 가질 수 있다.  
+그 결과로, Stream으로부터 얻어진 data는 도착하는 데로 개별적으로 수행되어진다. (반면 batch processing은 한꺼번에 함)  
+람다 표현식과 같이 사용하면, 간결한 방법으로 사용할 수 있다.  
+{% highlight ruby %}
+Stream<String> fruitStream = Stream.of("apple", "banana", "pear", "kiwi", "orange");
+
+fruitStream.filter(s -> s.contains("a"))
+           .map(String::toUpperCase)
+           .sorted()
+           .forEach(System.out::println);
+{% endhighlight %}
+
+{% highlight ruby %}
+APPLE
+BANANA
+ORANGE
+PEAR
+{% endhighlight %}
+1. fruit String 요소의 정렬된, 연속된 Stream객체를 포함하는 `Stream<String>`을 생성한다.  
+2. filter() operation은 주어진 조건에 매칭되는 elements를 간직한다.  
+3. map() operation은 각 element을 주어진 function을 이용해 변환시킨다. 이 예제의 경우, 대문자로 변환된다.  
+ - 만약 매핑 function이 다른 타입의 인풋 파라미터를 리턴한다면 map() operation은 다른 제네릭 타입의 stream을 리턴할 것이다.
+ - Stream<String>.map(String::isEmpty) 는 Stream<Boolean>을 리턴한다.
+4. sorted() operation은 Stream의 요소들을 sort한다.
+5. 마지막으로 forEach(action)을 통해 출력된다. 이 operation은 terminal operation이다. 다시 사용할 수 없다.  
+ - terminal operation없이는 stream은 processed되지 않는다. Stream은 재사용될 수 없기 때문에 terminal operation이 호출되면 stream을 다시 사용할 수 없다.  
+
+
+
+
+
+
+
+
+
+
+
+
+
+[streams by stackoverflow]: https://stackoverflow.com/documentation/java/88/streams#t=201708100232131491719
+<br><br><br>
+
+{% highlight ruby %}
+{% endhighlight %}
