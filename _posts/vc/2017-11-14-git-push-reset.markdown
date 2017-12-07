@@ -23,4 +23,4 @@ categories: Git
 
 
 
-[참조 URL]: https://rogerdudler.github.io/git-guide/index.ko.html
+[참조 URL]: http://g0n4k00.tistory.com/entry/Git-add-%EC%B7%A8%EC%86%8C-git-commit-%EC%B7%A8%EC%86%8C-git-reset-%EC%B7%A8%EC%86%8C-git-push-%EC%B7%A8%EC%86%8C
