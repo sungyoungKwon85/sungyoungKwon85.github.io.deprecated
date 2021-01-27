@@ -19,6 +19,7 @@ macOS
 ### [hello minikube](https://kubernetes.io/ko/docs/tutorials/hello-minikube/)
 
 - 대쉬보드 활성화 해보기
+
   `minikube dashboard`
 
 ![k8s dashboard](https://github.com/sungyoungKwon85/sungyoungKwon85.github.io/blob/master/_posts/k8s/images/dashboard%20example.png)
@@ -32,10 +33,11 @@ macOS
 #### Deployment 만들기
 
 - pod를 관리할 deployment를 만든다. 제공된 docker image를 기반으로 컨테이너를 실행한다. 
-  `$ kubectl create deployment hello-node --image=k8s.gcr.io/echoserver:1.41`
+
+  `$ kubectl create deployment hello-node --image=k8s.gcr.io/echoserver:1.41`  
   `deployment.apps/hello-node created`
 
-- deployment 보기
+- deployment 보기  
   `kubectl get deployments`
 
   ```
@@ -43,7 +45,7 @@ macOS
   hello-node   1/1     1            1           31s
   ```
 
-- pod 보기
+- pod 보기  
   `kubectl get pods`
 
   ```
@@ -51,8 +53,8 @@ macOS
   hello-node-7567d9fdc9-jjbxr   1/1     Running   0          72s
   ```
 
-- 클러스터 이벤트 보기
-  `kubectl get events`
+- 클러스터 이벤트 보기  
+  `kubectl get events `   
 
   ```
   LAST SEEN   TYPE     REASON              OBJECT                             MESSAGE
@@ -65,7 +67,7 @@ macOS
   101s        Normal   ScalingReplicaSet   deployment/hello-node              Scaled up replica set hello-node-7567d9fdc9 to 1
   ```
 
-- kubectl 환경설정 보기
+- kubectl 환경설정 보기  
   `kubectl config view`
 
   ```
@@ -112,7 +114,7 @@ macOS
 
 기본적으로 파드는 쿠버네티스 클러스터 내부의 IP 주소로만 접근할 수 있다. `hello-node` 컨테이너를 쿠버네티스 가상 네트워크 외부에서 접근하려면 파드를 쿠버네티스 [*서비스*](https://kubernetes.io/ko/docs/concepts/services-networking/service/)로 노출해야 한다.
 
-- `kubectl expose` 명령어로 퍼블릭 인터넷에 파드 노출하기
+- `kubectl expose` 명령어로 퍼블릭 인터넷에 파드 노출하기  
 
   `kubectl expose deployment hello-node --type=LoadBalancer --port=8080`
 
