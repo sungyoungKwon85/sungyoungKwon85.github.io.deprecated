@@ -3,5 +3,7 @@
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/_posts/book-microservice-pattern" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/_posts/book-microservice-pattern 복사본" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/_posts/book-microservicepattern" vcs="Git" />
   </component>
 </project>
