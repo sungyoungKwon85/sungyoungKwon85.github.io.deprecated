@@ -330,6 +330,8 @@ AWS에서 쿠버네티스를 실행하면 부하 분산기가 ELB가 되는 것
 
 ---
 
+도커파일   
+
 ```dockerfile
 FROM openjdk:8u171-jre-alpine
 RUN apk --no-cache add curl
@@ -341,4 +343,4 @@ COPY build/libs/ftgo-restaurant-service.jar .
 
 
 
-`
+![deployment yaml파일 위치](https://github.com/sungyoungKwon85/sungyoungKwon85.github.io/blob/master/_posts/k8s/images/k8s%20deployment%20path.png)
