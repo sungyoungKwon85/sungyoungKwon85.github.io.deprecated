@@ -52,7 +52,7 @@ class UserTermAgreeQueryRepository @Autowired constructor(
     private val queryFactory: JPAQueryFactory
 ) : QuerydslRepositorySupport(UserTermAgree::class.java) {
 
-    fun existByUserIdAndTerInfoId(userId: Long, termId: Long): Boolean {
+    fun existByUserIdAndTermId(userId: Long, termId: Long): Boolean {
         return queryFactory
       		  .selectFrom(userTermAgree)
             .where(
