@@ -68,6 +68,10 @@ Connection pooling은 항상 복잡성과 유지 관리 비용이 따름.
   }
   ```
 
+---
+## [timeout?](https://www.baeldung.com/spring-data-redis-properties)
+-  lettuce는 redisConnectionFactory에 설정할 필요가 없다. 프로퍼티만 넘겨주면 springboot가 알아서 한다.   
+`spring.redis.timeout=60000`
   
 
   
